@@ -97,27 +97,26 @@ class BreachChecker:
 
 checker = BreachChecker()
 
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
-
-@app.route('/check', methods=['POST'])
-def check_email():
-    email = request.form.get('email')
-    if not email:
-        return render_template('index.html', result={
-            'status': 'error',
-            'message': 'Please provide an email address'
-        })
-    
-    result = checker.check_email(email)
-    
-    if result['status'] == 'success' and result['breaches']:
-        stats = checker.get_breach_stats(result['breaches'])
-        result['stats'] = stats
+    if request.method == 'POST':
+        email = request.form.get('email')
+        if not email:
+            return jsonify({
+                'status': 'error',
+                'message': 'Please provide an email address'
+            })
         
-    return render_template('index.html', result=result)
+        result = checker.check_email(email)
+        
+        if result['status'] == 'success' and result['breaches']:
+            stats = checker.get_breach_stats(result['breaches'])
+            result['stats'] = stats
+            
+        return jsonify(result)
+    
+    return render_template('index.html')
 
 if __name__ == '__main__':
     print("WARNING: This is a development server. Use server.py for production.")
-    app.run(debug=False, port=5000)
+    app.run(debug=True, port=5000)
