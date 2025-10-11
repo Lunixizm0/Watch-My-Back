@@ -205,6 +205,10 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+<<<<<<< HEAD
 
 **/node_modules/
 **/.venv
+=======
+**/node_modules/
+>>>>>>> 63ee78f752f129a4f17f6a72d6d20defe749984a
