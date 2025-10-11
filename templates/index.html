@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Breach Checker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header text-center bg-primary text-white">
+                        <h2>Email Breach Checker</h2>
+                    </div>
+                    <div class="card-body">
+                        <form method="POST" action="{{ url_for('check_email') }}" class="mb-4">
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Enter Email Address:</label>
+                                <div class="input-group">
+                                    <input type="email" class="form-control" id="email" name="email" required
+                                           placeholder="your.email@example.com">
+                                    <button type="submit" class="btn btn-primary">Check</button>
+                                </div>
+                            </div>
+                        </form>
+
+                        {% if result %}
+                            <div class="results-section">
+                                {% if result.status == 'success' %}
+                                    {% if result.breaches %}
+                                        <div class="alert alert-danger">
+                                            <h4 class="alert-heading">⚠️ Breaches Found!</h4>
+                                            <p>Found {{ result.breaches|length }} breaches for {{ result.email }}</p>
+                                        </div>
+                                        {% for breach in result.breaches %}
+                                            <div class="card mb-3 breach-card">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ breach.Name }}</h5>
+                                                    <p class="card-text"><strong>Breach Date:</strong> {{ breach.BreachDate }}</p>
+                                                    
+                                                    {% if breach.DataClasses %}
+                                                        <div class="compromised-data">
+                                                            <strong>Compromised Data:</strong>
+                                                            <ul class="list-unstyled">
+                                                                {% for data_type in breach.DataClasses %}
+                                                                    <li><span class="bullet">•</span> {{ data_type }}</li>
+                                                                {% endfor %}
+                                                            </ul>
+                                                        </div>
+                                                    {% endif %}
+                                                    
+                                                    {% if breach.Description %}
+                                                        <p class="card-text"><small>{{ breach.Description }}</small></p>
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    {% else %}
+                                        <div class="alert alert-success">
+                                            <h4 class="alert-heading">✅ Good News!</h4>
+                                            <p>No breaches found for {{ result.email }}</p>
+                                        </div>
+                                    {% endif %}
+                                {% else %}
+                                    <div class="alert alert-warning">
+                                        <h4 class="alert-heading">⚠️ Error</h4>
+                                        <p>{{ result.message }}</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

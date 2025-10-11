@@ -1,0 +1,47 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    border-bottom: none;
+}
+
+.breach-card {
+    border-left: 4px solid #dc3545;
+    transition: transform 0.2s;
+}
+
+.breach-card:hover {
+    transform: translateY(-2px);
+}
+
+.compromised-data {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+}
+
+.bullet {
+    color: #dc3545;
+    margin-right: 0.5rem;
+}
+
+.results-section {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.alert {
+    border-radius: 0.5rem;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    border-color: #80bdff;
+}
