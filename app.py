@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request, jsonify
 import cloudscraper
+import requests
+import time
 from datetime import datetime
 import json
+import os
 
 app = Flask(__name__)
 
@@ -14,8 +17,28 @@ class BreachChecker:
                 'mobile': False
             }
         )
+        
+    def format_breach_data(self, breach, source):
+        """Format breach data consistently"""
+        formatted = {
+            'Name': breach.get('Name', 'Unknown Source'),
+            'BreachDate': breach.get('BreachDate', 'Unknown Date'),
+            'DataClasses': breach.get('DataClasses', ['Unknown Data Types']),
+            'Description': breach.get('Description', 'No description available'),
+            'source': source
+        }
+        print(f"Formatted breach from {source}: {formatted}")
+        return formatted
 
-    def check_email(self, email):
+    def get_breach_stats(self, breaches):
+        """Calculate breach statistics"""
+        hibp_count = len([b for b in breaches if b.get('source') == 'HIBP'])
+        return {
+            'total': len(breaches),
+            'hibp_count': hibp_count
+        }
+
+    def check_hibp(self, email):
         try:
             headers = {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/117.0.0.0 Safari/537.36',
@@ -34,27 +57,38 @@ class BreachChecker:
             response = self.scraper.get(url, headers=headers)
             
             if response.status_code == 404:
-                return {
-                    'status': 'success',
-                    'email': email,
-                    'breaches': []
-                }
+                return []
             
             if response.status_code != 200:
-                return {
-                    'status': 'error',
-                    'message': f'Error checking breaches: {response.status_code}'
-                }
+                return []
             
             data = response.json()
             breaches = data.get('Breaches', [])
             
+            # Format and mark each breach as coming from HIBP
+            formatted_breaches = []
+            for breach in breaches:
+                formatted_breach = self.format_breach_data(breach, 'HIBP')
+                formatted_breaches.append(formatted_breach)
+                
+            return formatted_breaches
+            
+        except Exception as e:
+            return {
+                'status': 'error',
+                'message': f'Error occurred: {str(e)}'
+            }
+
+    def check_email(self, email):
+        try:
+            # Get breaches from HIBP
+            hibp_breaches = self.check_hibp(email)
+            
             return {
                 'status': 'success',
                 'email': email,
-                'breaches': breaches
+                'breaches': hibp_breaches
             }
-            
         except Exception as e:
             return {
                 'status': 'error',
@@ -77,6 +111,11 @@ def check_email():
         })
     
     result = checker.check_email(email)
+    
+    if result['status'] == 'success' and result['breaches']:
+        stats = checker.get_breach_stats(result['breaches'])
+        result['stats'] = stats
+        
     return render_template('index.html', result=result)
 
 if __name__ == '__main__':

@@ -104,14 +104,6 @@ app.post('/api/check-breach', async (req, res) => {
             });
         }
 
-        if (email || username) {
-            const dehashedResults = await checkDeHashed(browser, email, username);
-            results.push({
-                source: 'DeHashed',
-                breaches: dehashedResults
-            });
-        }
-
         await browser.close();
         
         res.json({
