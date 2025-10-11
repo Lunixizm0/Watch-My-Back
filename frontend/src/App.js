@@ -54,7 +54,7 @@ const darkTheme = createTheme({
             main: '#ffd54f',
             light: '#fff176',
             dark: '#f9a825',
-            contrastText: '#000000',
+            contrastText: '#ffffffff',
         },
         success: {
             main: '#66bb6a',
@@ -491,7 +491,7 @@ function App() {
                                                     {result.breaches.length > 0 ? (
                                                         <Box>
                                                             {result.breaches.map((breach, i) => (
-                                                                <Card key={i} sx={{ mb: 2, backgroundColor: 'rgba(239, 83, 80, 0.1)' }}>
+                                                                <Card key={i} sx={{ mb: 2, backgroundColor: 'rgba(255, 255, 255, 1)' }}>
                                                                     <CardContent sx={{ py: 2 }}>
                                                                         <Typography variant="h6" color="error.main" gutterBottom>
                                                                             {breach.Name || breach.title}

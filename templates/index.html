@@ -190,7 +190,7 @@
         }
 
         .text-dark {
-            color: #000 !important;
+            color: #ffffffff !important;
         }
 
         .compromised-data {
@@ -225,7 +225,7 @@
             color: var(--text-secondary);
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 1);
         }
 
         /* Button Styles */
@@ -306,7 +306,7 @@
             font-size: 0.85em;
             padding: 8px 16px;
             border-radius: 12px;
-            background: rgba(255,213,79,0.2) !important;
+            background: rgba(255, 255, 255, 1) !important;
             color: var(--warning-color) !important;
         }
 
@@ -326,7 +326,7 @@
             color: var(--text-secondary);
             margin-top: 20px;
             padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
+            border-top: 1px solid rgba(255, 255, 255, 1);
         }
 
         .card-title {
@@ -731,7 +731,7 @@
                                     </span>
                                 </div>
 
-                                <div class="breach-date mb-3 text-muted">
+                                <div class="breach-date mb-3 text-light">
                                     <i class="bi bi-calendar-event me-2"></i>
                                     ${breach.BreachDate}
                                 </div>
@@ -755,7 +755,7 @@
 
                                 ${breach.Description ? `
                                     <div class="breach-description mt-3 pt-3 border-top border-secondary">
-                                        <small class="text-muted">${breach.Description}</small>
+                                        <small class="text-light">${breach.Description}</small>
                                     </div>
                                 ` : ''}
                             </div>
