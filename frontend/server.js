@@ -18,8 +18,14 @@ dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 5000;
-const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
+let backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
 const API_SECRET = process.env.API_SECRET || 'varsayilan-guvensiz-anahtar';
+
+// Render 'host' property sadece hostname döndürür (örn: service.onrender.com)
+// Protokol eklememiz gerekir
+if (!backendUrl.startsWith('http')) {
+    backendUrl = `https://${backendUrl}`;
+}
 
 console.log('Frontend sunucusu başlatılıyor...');
 console.log('Backend URL:', backendUrl);

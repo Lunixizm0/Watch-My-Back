@@ -24,7 +24,7 @@ services:
         fromService:
           type: web
           name: watch-my-back-backend
-          property: url
+          property: host
       - key: API_SECRET
         fromService:
           type: web
