@@ -1,6 +1,6 @@
 services:
   # Backend Servisi (Docker)
-  - type: pweb
+  - type: web
     name: watch-my-back-backend
     env: docker
     dockerContext: backend
@@ -22,11 +22,11 @@ services:
         value: 5000
       - key: BACKEND_URL
         fromService:
-          type: pweb
+          type: web
           name: watch-my-back-backend
           property: url
       - key: API_SECRET
         fromService:
-          type: pweb
+          type: web
           name: watch-my-back-backend
           envVarKey: API_SECRET
