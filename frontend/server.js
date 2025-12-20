@@ -19,6 +19,7 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 const backendUrl = process.env.BACKEND_URL || 'http://127.0.0.1:3001';
+const API_SECRET = process.env.API_SECRET || 'varsayilan-guvensiz-anahtar';
 
 console.log('Frontend sunucusu başlatılıyor...');
 console.log('Backend URL:', backendUrl);
@@ -57,6 +58,7 @@ app.post('/api/check-email', async (req, res) => {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'x-api-key': API_SECRET // Güvenli iletişim için API anahtarı
             },
             body: JSON.stringify(req.body)
         });

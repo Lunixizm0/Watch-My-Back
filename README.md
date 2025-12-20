@@ -76,7 +76,22 @@ npm run dev
 
 Tarayıcıda `http://localhost:5000` adresine gidin.
 
-### Üretim Ortamı
+### Üretim Ortamı (Deploy)
+
+#### Render.com
+
+Bu projeyi Render üzerinde yayınlayabilirsiniz:
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+1. Butona tıklayın.
+2. Render hesabınızla giriş yapın.
+3. "Apply" butonuna tıklayarak kurulumu başlatın.
+4. Render sizin için Frontend ve Backend servislerini otomatik kuracak ve birbirine bağlayacaktır.
+
+---
+
+### Manuel Kurulum
 
 ```bash
 # Backend
@@ -86,7 +101,8 @@ npm start
 # Frontend
 cd frontend
 npm start
-```
+``` 
+
 
 ## ⚙️ Yapılandırma
 
@@ -129,8 +145,8 @@ Watch-My-Back/
 
 ## 🔒 Güvenlik
 
-- Backend sadece `127.0.0.1` üzerinde dinler (internete kapalı)
-- IP bazlı erişim kısıtlaması
+- Backend **public internete kapalı** (Internal Service) veya **API Key** ile korunur.
+- Frontend ve Backend arasında `x-api-key` ile güvenli iletişim sağlanır.
 - Rate limiting (15 dakikada 100 istek)
 - Helmet.js güvenlik başlıkları
 

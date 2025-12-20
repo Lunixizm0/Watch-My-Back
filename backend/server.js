@@ -24,33 +24,30 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
-// İzin verilen IP adresleri - sadece frontend sunucusu erişebilir
-const allowedIPs = process.env.ALLOWED_IPS
-    ? process.env.ALLOWED_IPS.split(',').map(ip => ip.trim())
-    : ['127.0.0.1', '::1', 'localhost'];
+// Trust Proxy (Render Load Balancer için gerekli)
+app.set('trust proxy', 1);
 
-console.log('İzin verilen IP\'ler:', allowedIPs);
+// API Key Güvenlik Kontrolü
+// Render gibi bulut ortamlarında IP değişken olduğu için API Key kullanıyoruz
+const API_SECRET = process.env.API_SECRET || 'varsayilan-guvensiz-anahtar';
 
-/**
- * IP Kısıtlama Middleware
- * Sadece izin verilen IP adreslerinden gelen istekleri kabul eder
- */
-const ipRestriction = (req, res, next) => {
-    const clientIP = req.ip || req.connection.remoteAddress || req.socket.remoteAddress;
-    // IPv6 localhost formatını normalize et
-    const normalizedIP = clientIP.replace('::ffff:', '');
+const authMiddleware = (req, res, next) => {
+    // Health check hariç her istekte anahtar kontrolü yap
+    if (req.path === '/api/health') return next();
 
-    if (allowedIPs.some(ip => normalizedIP.includes(ip))) {
+    const clientKey = req.headers['x-api-key'];
+
+    if (clientKey && clientKey === API_SECRET) {
         next();
     } else {
-        console.log('Reddedilen IP:', clientIP);
-        res.status(403).json({ error: 'Erişim reddedildi' });
+        console.log(`Yetkisiz erişim denemesi: ${req.ip}`);
+        res.status(403).json({ error: 'Erişim reddedildi: Geçersiz API Anahtarı' });
     }
 };
 
 // Güvenlik middleware'leri
 app.use(helmet());
-app.use(ipRestriction);
+app.use(authMiddleware);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -252,9 +249,9 @@ process.on('SIGTERM', async () => {
 // SUNUCUYU BAŞLAT
 // ============================================
 
-// Sadece localhost'ta dinle - internete kapalı
-app.listen(port, '127.0.0.1', () => {
+// 0.0.0.0'da dinle - Docker ve Bulut ortamları için gerekli
+app.listen(port, '0.0.0.0', () => {
     console.log(`\n🛡️  Watch My Back - Backend API`);
-    console.log(`📍 Adres: http://127.0.0.1:${port}`);
-    console.log(`🔒 Sadece localhost'tan erişilebilir\n`);
+    console.log(`📍 Adres: http://0.0.0.0:${port}`);
+    console.log(`🔒 API Key koruması aktif\n`);
 });
