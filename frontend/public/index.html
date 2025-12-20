@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Watch My Back - Veri İhlali Kontrolcüsü</title>
+
+    <!-- Harici CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Uygulama CSS -->
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <!-- Hero Bölümü -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="hero-content">
+                <!-- Güvenlik İkonu -->
+                <div class="hero-icon">
+                    <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="shieldGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#5c6bc0;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#3949ab;stop-opacity:1" />
+                            </linearGradient>
+                            <linearGradient id="checkGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" style="stop-color:#66bb6a;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#4caf50;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <path d="M32 4L12 12V32C12 45.5 20.5 58 32 60C43.5 58 52 45.5 52 32V12L32 4Z"
+                            fill="url(#shieldGradient)" stroke="rgba(255,255,255,0.2)" stroke-width="1" />
+                        <path d="M32 8L16 14V32C16 43 22.5 53 32 54.5C41.5 53 48 43 48 32V14L32 8Z"
+                            fill="rgba(255,255,255,0.1)" />
+                        <path d="M24 32L28 36L40 24" stroke="url(#checkGradient)" stroke-width="3"
+                            stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </div>
+
+                <!-- Hero Başlığı -->
+                <h1 class="hero-title">Watch My Back</h1>
+                <p class="hero-subtitle">
+                    Verilerinizin ele geçirilip geçirilmediğini kontrol edin.<br>
+                    Güvenliğinizi sağlayın, gizliliğinizi koruyun.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ana İçerik -->
+    <div class="container" id="mainContent" style="display: none;">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header text-center">
+                        <h2 class="mb-0">Veri İhlali Kontrolcüsü</h2>
+                    </div>
+                    <div class="card-body p-4">
+                        <form id="checkForm" class="mb-4">
+                            <div class="row g-3">
+                                <div class="col-12">
+                                    <label for="email" class="form-label">
+                                        <i class="bi bi-envelope me-2"></i>E-posta Adresi
+                                    </label>
+                                    <div class="input-group">
+                                        <i class="bi bi-envelope input-icon"></i>
+                                        <input type="email" class="form-control with-icon" id="email" name="email"
+                                            required placeholder="ornek@email.com">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit" class="btn btn-primary w-100" id="submitBtn">
+                                        <i class="bi bi-shield-check me-2"></i>
+                                        <span class="btn-text">Veri İhlallerini Kontrol Et</span>
+                                        <span class="btn-loading d-none">
+                                            <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                                            Kontrol Ediliyor...
+                                        </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- İlerleme Çubuğu -->
+                        <div id="progressContainer" class="progress-container">
+                            <div class="progress">
+                                <div id="progressBar" class="progress-bar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                            <div id="progressText" class="progress-text">Veri kaynakları taranıyor...</div>
+                        </div>
+
+                        <!-- Sonuçlar -->
+                        <div id="results"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scriptler -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
